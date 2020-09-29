@@ -10,7 +10,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
     num_bubbles = len(preferences[0])
 
     # define costs for different preferences
-    preference_costs = [20, 15, 6, 3, 1]
+    preference_costs = [10, 5, 2, -2, -5]
     # for evaluation of ordering success
     student_got_priority = [0,0,0,0,0]
     # create the membership matrix for result
@@ -109,7 +109,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 
         print("\n\nResult:")
         for pref, pref_count in enumerate(student_got_priority):
-            print('priority : %s student count : %s  (%2.1f percent)' % (pref + 1 , pref_count, pref_count/ float(num_students) * 100))
+            print('priority : %s student count : %s  (%2.1f percent)' % (pref + 1, pref_count, pref_count/ float(num_students) * 100))
 
     else:
         print('There was an issue with the min cost flow input.')
@@ -123,7 +123,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 
 if __name__ == "__main__":
     # define the data
-    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4]])
+    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4], [1,1]])
     max_bubble_size = 3
 
     # solve the membership problem
