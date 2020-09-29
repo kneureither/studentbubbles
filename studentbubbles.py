@@ -5,22 +5,22 @@ from util import util
 import numpy as np
 
 
-def main():
-    num_students = 5
-    num_bubbles = 2
-    max_bubble_size = 3
+def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], [2,4]]), max_bubble_size=3):
+    num_students = len(preferences)
+    num_bubbles = len(preferences[0])
 
+    # define costs for different preferences
     preference_costs = [20, 15, 6, 3, 1]
+    # for evaluation of ordering success
+    student_got_priority = [0,0,0,0,0]
+    # create the membership matrix for result
+    membership = [[0 for i in range(num_bubbles)] for j in range(num_students)]
 
-    # input from web formula
-    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4]])
-
+    # store graph
     start_nodes = []
     end_nodes = []
     capacities = []
     unit_costs = []
-
-    stud_count = len(preferences)
 
     for stud_idx, stud_prefs in enumerate(preferences):
         # make edges from source to each student
@@ -30,22 +30,21 @@ def main():
         unit_costs.append(0)
 
     for stud_idx, stud_prefs in enumerate(preferences):
-
         for bubble_idx, bubble_pref in enumerate(stud_prefs):
             # make edges from students to bubbles
             start_nodes.append(stud_idx+1)
-            end_nodes.append(stud_count + 1 + bubble_idx)
+            end_nodes.append(num_students + 1 + bubble_idx)
             capacities.append(1)
-            unit_costs.append(preferences[stud_idx][bubble_idx])
+            unit_costs.append(preference_costs[preferences[stud_idx][bubble_idx] - 1])
 
     for bubble_idx in range(num_bubbles):
         # make edges from bubbles to sink
-        start_nodes.append(stud_count + 1 + bubble_idx)
-        end_nodes.append(stud_count + num_bubbles + 1)
+        start_nodes.append(num_students + 1 + bubble_idx)
+        end_nodes.append(num_students + num_bubbles + 1)
         capacities.append(max_bubble_size)
         unit_costs.append(0)
 
-    supplies = [0 for i in range(stud_count + num_bubbles + 2)]
+    supplies = [0 for i in range(num_students + num_bubbles + 2)]
     supplies[0] = num_students
     supplies[len(supplies) - 1] = -num_students
 
@@ -67,7 +66,6 @@ def main():
         min_cost_flow.AddArcWithCapacityAndUnitCost(start_node, end_node, capacity, unit_cost)
 
     # Add node supplies.
-
     for i in range(0, len(supplies)):
         min_cost_flow.SetNodeSupply(i, supplies[i])
 
@@ -84,9 +82,52 @@ def main():
                 min_cost_flow.Flow(i),
                 min_cost_flow.Capacity(i),
                 cost))
+
+        print("")
+
+        # get the relevant edges
+        for student_idx in range(num_students):
+            for stud_bubble_idx in range(num_bubbles):
+                i = num_students + student_idx * num_bubbles + stud_bubble_idx
+
+                cost = min_cost_flow.Flow(i) * min_cost_flow.UnitCost(i)
+                print('%1s -> %1s   %3s  / %3s       %3s' % (
+                    min_cost_flow.Tail(i),
+                    min_cost_flow.Head(i),
+                    min_cost_flow.Flow(i),
+                    min_cost_flow.Capacity(i),
+                    cost))
+
+                student = min_cost_flow.Tail(i) - 1
+                bubble = min_cost_flow.Head(i) - num_students - 1
+                flow = min_cost_flow.Flow(i)
+
+                membership[student][bubble] = flow
+                if cost != 0:
+                    pref = preference_costs.index(cost)
+                    student_got_priority[pref] += 1
+
+        print("\n\nResult:")
+        for pref, pref_count in enumerate(student_got_priority):
+            print('priority: %s student count: %s' % (pref, pref_count))
+
     else:
         print('There was an issue with the min cost flow input.')
 
 
+
+    return membership
+
+
+
+
 if __name__ == "__main__":
-    main()
+    # define the data
+    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4]])
+    max_bubble_size = 3
+
+    # solve the membership problem
+    membership = solve_bubble_optimization(preferences, max_bubble_size)
+
+    print("\n\n")
+    print(membership)
