@@ -109,7 +109,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 
         print("\n\nResult:")
         for pref, pref_count in enumerate(student_got_priority):
-            print('priority: %s student count: %s' % (pref, pref_count))
+            print('priority : %s student count : %s  (%2.1f percent)' % (pref + 1 , pref_count, pref_count/ float(num_students) * 100))
 
     else:
         print('There was an issue with the min cost flow input.')
