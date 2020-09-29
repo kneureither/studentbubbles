@@ -5,13 +5,24 @@ from util import util
 import numpy as np
 
 
-def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], [2,4]]), max_bubble_size=0):
+def solve_bubble_optimization(preferences=None, bubble_capacities=None):
     num_students = len(preferences)
     num_bubbles = len(preferences[0])
 
-    if max_bubble_size==0:
+    PRINT_COMPLETE_GRAPH = False
+    PRINT_MEMBERSHIP_EDGES = False
+
+    if bubble_capacities is None:
         max_bubble_size = np.ceil(num_students / num_bubbles)
-        print("INFO : Set bubble size to working minimum, which is: %d\n" % (max_bubble_size))
+        print("INFO  : Set bubble size to working minimum, which is: %d, number of bubbles: %d\n" % (max_bubble_size, num_bubbles))
+        bubble_capacities = [max_bubble_size for i in range(num_bubbles)]
+
+    if preferences is None:
+        print("ERROR : No data, aborting...")
+        return None
+
+    # check if input data and capacity array work together
+    assert(len(bubble_capacities) == num_bubbles)
 
     # define costs for different preferences
     preference_costs = [10, 5, 2, -2, -5]
@@ -45,7 +56,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
         # make edges from bubbles to sink
         start_nodes.append(num_students + 1 + bubble_idx)
         end_nodes.append(num_students + num_bubbles + 1)
-        capacities.append(max_bubble_size)
+        capacities.append(bubble_capacities[bubble_idx])
         unit_costs.append(0)
 
     supplies = [0 for i in range(num_students + num_bubbles + 2)]
@@ -75,25 +86,13 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 
     # Find the minimum cost flow between node 0 and node 4.
     if min_cost_flow.Solve() == min_cost_flow.OPTIMAL:
-        print('Minimum cost:', min_cost_flow.OptimalCost())
-        print('')
-        print('  Arc    Flow / Capacity  Cost')
-        for i in range(min_cost_flow.NumArcs()):
-            cost = min_cost_flow.Flow(i) * min_cost_flow.UnitCost(i)
-            print('%1s -> %1s   %3s  / %3s       %3s' % (
-                min_cost_flow.Tail(i),
-                min_cost_flow.Head(i),
-                min_cost_flow.Flow(i),
-                min_cost_flow.Capacity(i),
-                cost))
 
-        print("")
-
-        # get the relevant edges
-        for student_idx in range(num_students):
-            for stud_bubble_idx in range(num_bubbles):
-                i = num_students + student_idx * num_bubbles + stud_bubble_idx
-
+        if PRINT_COMPLETE_GRAPH:
+            print("INFO  : Complete Graph Solution")
+            print('Minimum cost:', min_cost_flow.OptimalCost())
+            print('')
+            print('  Arc    Flow / Capacity  Cost')
+            for i in range(min_cost_flow.NumArcs()):
                 cost = min_cost_flow.Flow(i) * min_cost_flow.UnitCost(i)
                 print('%1s -> %1s   %3s  / %3s       %3s' % (
                     min_cost_flow.Tail(i),
@@ -101,6 +100,24 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
                     min_cost_flow.Flow(i),
                     min_cost_flow.Capacity(i),
                     cost))
+
+        if PRINT_MEMBERSHIP_EDGES:
+            print("\n\nINFO  : Student membership edges")
+
+        # get the relevant edges
+        for student_idx in range(num_students):
+            for stud_bubble_idx in range(num_bubbles):
+                i = num_students + student_idx * num_bubbles + stud_bubble_idx
+
+                cost = min_cost_flow.Flow(i) * min_cost_flow.UnitCost(i)
+
+                if PRINT_MEMBERSHIP_EDGES:
+                    print('%1s -> %1s   %3s  / %3s       %3s' % (
+                        min_cost_flow.Tail(i),
+                        min_cost_flow.Head(i),
+                        min_cost_flow.Flow(i),
+                        min_cost_flow.Capacity(i),
+                        cost))
 
                 student = min_cost_flow.Tail(i) - 1
                 bubble = min_cost_flow.Head(i) - num_students - 1
@@ -111,9 +128,10 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
                     pref = preference_costs.index(cost)
                     student_got_priority[pref] += 1
 
-        print("\n\nResult:")
+        print("\n\nINFO  : Result *******************")
         for pref, pref_count in enumerate(student_got_priority):
             print('priority : %s student count : %s  (%2.1f percent)' % (pref + 1, pref_count, pref_count/ float(num_students) * 100))
+        print("**********************************")
 
     else:
         print('There was an issue with the min cost flow input.')
@@ -127,11 +145,11 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 
 if __name__ == "__main__":
     # define the data
-    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4], [1,1]])
-    max_bubble_size = 0
+    preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4]])
+    bubble_capacities = [3, 3]
 
     # solve the membership problem
-    membership = solve_bubble_optimization(preferences, max_bubble_size)
+    membership = solve_bubble_optimization(preferences, bubble_capacities)
 
     print("\n\n")
     print(membership)
