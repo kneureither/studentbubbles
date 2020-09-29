@@ -5,9 +5,13 @@ from util import util
 import numpy as np
 
 
-def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], [2,4]]), max_bubble_size=3):
+def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], [2,4]]), max_bubble_size=0):
     num_students = len(preferences)
     num_bubbles = len(preferences[0])
+
+    if max_bubble_size==0:
+        max_bubble_size = np.ceil(num_students / num_bubbles)
+        print("INFO : Set bubble size to working minimum, which is: %d\n" % (max_bubble_size))
 
     # define costs for different preferences
     preference_costs = [10, 5, 2, -2, -5]
@@ -124,7 +128,7 @@ def solve_bubble_optimization(preferences=np.array([[4,5], [1,5], [3,4], [1,1], 
 if __name__ == "__main__":
     # define the data
     preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4], [1,1]])
-    max_bubble_size = 3
+    max_bubble_size = 0
 
     # solve the membership problem
     membership = solve_bubble_optimization(preferences, max_bubble_size)
