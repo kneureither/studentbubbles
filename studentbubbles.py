@@ -6,11 +6,18 @@ import numpy as np
 
 
 def solve_bubble_optimization(preferences=None, bubble_capacities=None):
+    """
+    :param preferences: np.array of size(students, bubbles) where entries are int numbers between 1 (lowest) and 5 (highest priority)
+    :param bubble_capacities: list of bubbles and corresponding priorities
+    :return: array of size (students, bubbles) with only one non-zero entry per row
+    """
+
     num_students = len(preferences)
     num_bubbles = len(preferences[0])
 
     PRINT_COMPLETE_GRAPH = False
     PRINT_MEMBERSHIP_EDGES = False
+    PRINT_GRAPH = False
 
     if bubble_capacities is None:
         max_bubble_size = np.ceil(num_students / num_bubbles)
@@ -63,11 +70,12 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None):
     supplies[0] = num_students
     supplies[len(supplies) - 1] = -num_students
 
-    print("start_nodes", start_nodes)
-    print("end_nodes  ", end_nodes)
-    print("capacities ", capacities)
-    print("unit_costs ", unit_costs)
-    print("supplies   ", supplies)
+    if PRINT_GRAPH:
+        print("start_nodes", start_nodes)
+        print("end_nodes  ", end_nodes)
+        print("capacities ", capacities)
+        print("unit_costs ", unit_costs)
+        print("supplies   ", supplies)
 
     # Instantiate a SimpleMinCostFlow solver.
     min_cost_flow = pywrapgraph.SimpleMinCostFlow()
@@ -135,8 +143,6 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None):
 
     else:
         print('There was an issue with the min cost flow input.')
-
-
 
     return membership
 
