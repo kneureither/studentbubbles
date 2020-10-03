@@ -21,7 +21,15 @@ if __name__ == "__main__":
     membership = solve_bubble_optimization(preferences, bubble_capacities)
     print("--- %s seconds ---" % (time.time() - start_time))
 
+
+
     print("\n\n")
+
+    assert(len(membership) == number_of_students)
+    assert(len(membership[0]) == number_of_bubbles);
+
     for i in range(len(membership)):
+        # check if there is only one bubble assigned for each student
+        assert(membership[i].count(1) == 1)
         print("pref: ", preferences[i], " result: ", membership[i])
 
