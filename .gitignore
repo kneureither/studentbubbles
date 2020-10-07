@@ -1,6 +1,6 @@
 .idea/
-*/__pycache__/
+*/__pycache__/*
 plots/
 .DS_Store
 */.DS_Store
-__pycache__/*
+__pycache__/studentbubbles.cpython-37.pyc
