@@ -5,7 +5,7 @@ from util import util
 import numpy as np
 
 
-def solve_bubble_optimization(preferences=None, bubble_capacities=None):
+def solve_bubble_optimization(preferences=None, bubble_capacities=None, preference_costs=[10, 5, 2, -2, -5]):
     """
     :param preferences: np.array of size(students, bubbles) where entries are int numbers between 1 (lowest) and 5 (highest priority)
     :param bubble_capacities: list of bubbles and corresponding priorities
@@ -28,11 +28,17 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None):
         print("ERROR : No data, aborting...")
         return None
 
+    # check validity of preference_costs array
+    assert(len(preference_costs) == 5)
+
+    # check if prefence indices are correct
+    for student in preferences:
+        for stars in student:
+            assert(1 <= stars and stars <= 5)
+
     # check if input data and capacity array work together
     assert(len(bubble_capacities) == num_bubbles)
 
-    # define costs for different preferences
-    preference_costs = [10, 5, 2, -2, -5]
     # for evaluation of ordering success
     student_got_priority = [0,0,0,0,0]
     # create the membership matrix for result
@@ -137,15 +143,33 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None):
                     student_got_priority[pref] += 1
 
         print("\n\nINFO  : Result *******************")
+        print('Minimum cost:', min_cost_flow.OptimalCost())
         for pref, pref_count in enumerate(student_got_priority):
-            print('priority : %s student count : %s  (%2.1f percent)' % (pref + 1, pref_count, pref_count/ float(num_students) * 100))
+            print('priority : %s student count : %s  (%2.1f percent)' % (pref, pref_count, pref_count/ float(num_students) * 100))
         print("**********************************")
+
+        return membership
 
     else:
         print('There was an issue with the min cost flow input.')
+        return None
 
-    return membership
 
+
+def calculate_result_quality(preferences, membership):
+    assert(len(preferences) == len(membership))
+    assert(len(preferences[0]) == len(membership[0]))
+    students = len(preferences)
+    bubbles = len(preferences[0])
+
+    student_got_priorities=[0,0,0,0,0]
+
+    for s in range(students):
+        for b in range(bubbles):
+            if(membership[s][b] == 1):
+                student_got_priorities[preferences[s][b]-1] += 1
+
+    return student_got_priorities
 
 
 
