@@ -37,7 +37,12 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None, preferen
             assert(1 <= stars and stars <= 5)
 
     # check if input data and capacity array work together
-    assert(len(bubble_capacities) == num_bubbles)
+    assert len(bubble_capacities) == num_bubbles, "Preference array and provided bubble capacitites do not match"
+    total_capacity = 0
+    for bubble_cap in bubble_capacities:
+        total_capacity += bubble_cap
+
+    assert num_students <= total_capacity, "The total capacity of bubbles is smaller than number of students."
 
     # for evaluation of ordering success
     student_got_priority = [0,0,0,0,0]

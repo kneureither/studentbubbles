@@ -6,7 +6,7 @@ import time
 
 if __name__ == "__main__":
     # define the data
-    number_of_students = 400
+    number_of_students = 452
     number_of_bubbles = 12
 
     mode = "binomial"
