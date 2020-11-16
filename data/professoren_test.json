@@ -1,0 +1,92 @@
+{
+  "1": {
+    "prid": "1",
+    "name": "Andr\u00e9 Butz",
+    "uniid": "oc152",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 9:00",
+      "2020-12-02 9:00",
+      "2020-12-09 9:00",
+      "2020-12-16 9:00"
+    ],
+    "termine2": [
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00"
+    ]
+  },
+  "2": {
+    "prid": "2",
+    "name": "Andr\u00e9 Sch\u00f6ning",
+    "uniid": "iw122",
+    "anztermine": 1,
+    "termine": [
+      "2020-11-27 15:00",
+      "2020-12-04 15:00",
+      "2020-12-11 15:00",
+      "2020-12-18 15:00"
+    ],
+    "termine2": [
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00"
+    ]
+  },
+  "3": {
+    "prid": "3",
+    "name": "Andreas Quirrenbach",
+    "uniid": "",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 18:00",
+      "2020-12-03 18:00",
+      "2020-12-09 18:00",
+      "2020-12-18 18:00"
+    ],
+    "termine2": [
+      "Donnerstag 18:00-19:00",
+      "Donnerstag 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Freitag 18:00-19:00"
+    ]
+  },
+  "4": {
+    "prid": "4",
+    "name": "Arthur Hebecker",
+    "uniid": "tx126",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 18:00",
+      "2020-12-02 18:00",
+      "2020-12-09 18:00",
+      "2020-12-16 18:00"
+    ],
+    "termine2": [
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00"
+    ]
+  },
+  "5": {
+    "prid": "5",
+    "name": "Bj\u00f6rn Malte Sch\u00e4fer",
+    "uniid": "es122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 16:00",
+      "2020-11-30 16:00",
+      "2020-12-07 16:00",
+      "2020-12-14 16:00"
+    ],
+    "termine2": [
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00"
+    ]
+  }
+}

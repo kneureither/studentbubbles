@@ -3,22 +3,22 @@ import util.constants
 import numpy as np
 import json
 import heapq
+from classes.professordate import Professor
 
 #### DATE DATA
 # parse json input to numpy format
-inputdata = "data/exportdata.json"
+inputdata = "data/exportdata_test.json"
 
 with open(inputdata) as input:
     exportdata = json.load(input)
 
 # define the data
 prefs = []
-ids = []
+studids = []
 fachsems = []
 
 # get data
 for key in exportdata:
-    print(key)
     stud = exportdata[key]
 
     pref = stud['prefs']
@@ -26,18 +26,17 @@ for key in exportdata:
     fachsem = stud['fachsem']
 
     # modify weights for 1st and 3rd semester
-    if fachsem == 1:
-        pref += 2
+    if fachsem == "1":
+        for i in range(len(pref)):
+            pref[i] += 2
 
     prefs.append(pref)
     fachsems.append(fachsem)
-    ids.append(id)
+    studids.append(id)
 
 
 #### PROF DATA
-
-
-inputprofs = "data/professoren.json"
+inputprofs = "data/professoren_test.json"
 
 with open(inputprofs) as input:
     profdata = json.load(input)
@@ -51,7 +50,6 @@ profdates = []
 # get data
 idx=1
 for key in profdata:
-    print(key)
     prof = profdata[key]
 
     profids.append(int(prof['prid']))
@@ -64,30 +62,76 @@ for key in profdata:
     idx += 1
 
 
+prof_capacities = [6*dates for dates in profdatecnts]
+preferences = np.array(prefs)
 
-# make this somehow nice
-prof_capacities = [24 for i in range(3)]
-
-
-# test numpy data
-preferences = np.array([[0, 1, 0],
-                        [0, 3, 0],
-                        [2, 3, 0],
-                        [1, 1, 0],
-                        [0, 0, 1]])
-
-prof_capacities = [24, 24, 24]
+assert len(prof_capacities) == len(preferences[0])
 
 # solve the association problem
 association = solve_meet_prof_optimization(bubble_capacities=prof_capacities, preferences=preferences)
+association = np.array(association)
 
-
+# contains all students, so that first every student gets one date, then a second
 stud_heap = []
 
-# heapq data format (no. groups, id, (prof 1, prof 2), (date 1, date 2))
-# pop one student, associate date, update tuple, push back to queue.
-# prof list with stud count and date return.
+# how many students are associated to each prof
+prof_stud_cnts = [0 for i in range(len(profids))]
 
-# stud_heap.append((0, 0, (0,0)))
+
+#### INTELLIGENT SORTING
+# get data from association matrix
+stud_idx = 0
+for studentasn in association:
+    studprofs = np.nonzero(studentasn)
+    studid = studids[stud_idx]
+    stud_idx += 1
+    print("ASN / profs / id", studentasn, studprofs[0], studid)
+
+    # heapq.heappush(stud_heap, (0, studid, tuple(studprofs), (0, 0)))
+
+    for prof in studprofs[0]:
+        prof_stud_cnts[prof] += 1
+
+
+##### RANDOM SORTING
+# List for prof classes, to handle the group size and assignment
+Professors = []
+
+for prof_idx in range(len(profids)):
+    assert prof_idx + 1 == profids[prof_idx]
+    profstuds = np.nonzero(association[:, prof_idx])[0]
+    Prof = Professor(stud_cnt=len(profstuds), student_lst=profstuds)
+    Prof.distributeRandom()
+    Professors.append(Prof)
+
+
+##### READ OUT DATES FROM PROF CLASSES
+
+membership = np.zeros((len(studids), len(profids)), dtype=np.int32)
+
+prof_idx = 0
+for Prof in Professors:
+    date_idx = 1
+    for date in Prof.dates:
+        for stud_idx in date:
+            membership[stud_idx][prof_idx] = date_idx
+        date_idx += 1
+    prof_idx += 1
+
+
+result = dict()
+
+for i in range(len(membership)):
+    print(membership[i], preferences[i])
+    studdict = dict(id=studids[i], fachsem=fachsems[i], prefs=preferences[i].tolist(), dates=membership[i].tolist())
+    result[str(i)] = studdict
+
+print(result)
+
+with open('data/result.json', 'w') as file:
+    json.dump(result, file)
+    file.close()
+
+
 
 
