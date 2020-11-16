@@ -2,7 +2,9 @@ from util.meetyourprofoptimization import solve_meet_prof_optimization
 import util.constants
 import numpy as np
 import json
+import heapq
 
+#### DATE DATA
 # parse json input to numpy format
 inputdata = "data/exportdata.json"
 
@@ -20,7 +22,7 @@ for key in exportdata:
     stud = exportdata[key]
 
     pref = stud['prefs']
-    id = stud['ids']
+    id = stud['id']
     fachsem = stud['fachsem']
 
     # modify weights for 1st and 3rd semester
@@ -31,7 +33,40 @@ for key in exportdata:
     fachsems.append(fachsem)
     ids.append(id)
 
-prof_capacities = [24 for i in range()]
+
+#### PROF DATA
+
+
+inputprofs = "data/professoren.json"
+
+with open(inputprofs) as input:
+    profdata = json.load(input)
+
+# define the data
+profids=[]
+profnames = []
+profdatecnts = []
+profdates = []
+
+# get data
+idx=1
+for key in profdata:
+    print(key)
+    prof = profdata[key]
+
+    profids.append(int(prof['prid']))
+    profnames.append(prof['name'])
+    profdatecnts.append(prof['anztermine'])
+    profdates.append(prof['termine'])
+
+    # just a check
+    assert idx == int(prof['prid'])
+    idx += 1
+
+
+
+# make this somehow nice
+prof_capacities = [24 for i in range(3)]
 
 
 # test numpy data
@@ -46,5 +81,13 @@ prof_capacities = [24, 24, 24]
 # solve the association problem
 association = solve_meet_prof_optimization(bubble_capacities=prof_capacities, preferences=preferences)
 
+
+stud_heap = []
+
+# heapq data format (no. groups, id, (prof 1, prof 2), (date 1, date 2))
+# pop one student, associate date, update tuple, push back to queue.
+# prof list with stud count and date return.
+
+# stud_heap.append((0, 0, (0,0)))
 
 

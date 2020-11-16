@@ -8,6 +8,7 @@ class Professor:
         student_cnt = len(self.students)
         self.max_date_members = 6
         self.min_date_members = 3
+        self.added_students = 0
 
         if student_cnt < self.min_date_members:
             print("Error: less then 3 students for prof.")
@@ -18,7 +19,6 @@ class Professor:
             self.max_date_members = 5
             self.date_cnt = 2
         elif student_cnt <= 12:
-            print("hi")
             self.max_date_members = 6
             self.date_cnt = 2
         elif student_cnt <= 15:
@@ -51,13 +51,19 @@ class Professor:
 
         # fill dates
         for i in range(self.date_cnt):
-                while not stud_q.empty() and len(self.dates[i]) <= self.max_date_members:
+                while not stud_q.empty() and len(self.dates[i]) < self.max_date_members:
                     self.dates[i].append(stud_q.get())
 
         return self.dates
 
+    def getDateForStudent(self, stud):
+        group = self.added_students // self.max_date_members
+        self.added_students += 1
+        print("stud: ", stud, "group: ", group)
+        assert group <= self.date_cnt
 
-    def GetRandIdx(self):
+
+    def getRandIdx(self):
         return randint(0, len(self.students)-1)
 
 
@@ -72,3 +78,7 @@ if __name__ == "__main__":
     dates = Prof.distributeRandom()
 
     print(dates)
+
+
+    for i in student_list:
+        Prof.getDateForStudent(i)

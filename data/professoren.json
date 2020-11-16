@@ -1,0 +1,758 @@
+{
+  "1": {
+    "prid": "1",
+    "name": "Andr\u00e9 Butz",
+    "uniid": "oc152",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 9:00",
+      "2020-12-02 9:00",
+      "2020-12-09 9:00",
+      "2020-12-16 9:00"
+    ],
+    "termine2": [
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00",
+      "Mittwoch 9:00-10:00"
+    ]
+  },
+  "2": {
+    "prid": "2",
+    "name": "Andr\u00e9 Sch\u00f6ning",
+    "uniid": "iw122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-27 15:00",
+      "2020-12-04 15:00",
+      "2020-12-11 15:00",
+      "2020-12-18 15:00"
+    ],
+    "termine2": [
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00"
+    ]
+  },
+  "3": {
+    "prid": "3",
+    "name": "Andreas Quirrenbach",
+    "uniid": "",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 18:00",
+      "2020-12-03 18:00",
+      "2020-12-09 18:00",
+      "2020-12-18 18:00"
+    ],
+    "termine2": [
+      "Donnerstag 18:00-19:00",
+      "Donnerstag 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Freitag 18:00-19:00"
+    ]
+  },
+  "4": {
+    "prid": "4",
+    "name": "Arthur Hebecker",
+    "uniid": "tx126",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 18:00",
+      "2020-12-02 18:00",
+      "2020-12-09 18:00",
+      "2020-12-16 18:00"
+    ],
+    "termine2": [
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00",
+      "Mittwoch 18:00-19:00"
+    ]
+  },
+  "5": {
+    "prid": "5",
+    "name": "Bj\u00f6rn Malte Sch\u00e4fer",
+    "uniid": "es122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 16:00",
+      "2020-11-30 16:00",
+      "2020-12-07 16:00",
+      "2020-12-14 16:00"
+    ],
+    "termine2": [
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00"
+    ]
+  },
+  "6": {
+    "prid": "6",
+    "name": "Carsten Rother",
+    "uniid": "fo151",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 12:00",
+      "2020-11-30 12:00",
+      "2020-12-07 12:00",
+      "2020-12-14 12:00"
+    ],
+    "termine2": [
+      "Montag 12:00-13:00",
+      "Montag 12:00-13:00",
+      "Montag 12:00-13:00",
+      "Montag 12:00-13:00"
+    ]
+  },
+  "7": {
+    "prid": "7",
+    "name": "Christian Enss",
+    "uniid": "kp123",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 15:00",
+      "2020-11-30 15:00",
+      "2020-12-07 15:00",
+      "2020-12-14 15:00"
+    ],
+    "termine2": [
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00"
+    ]
+  },
+  "8": {
+    "prid": "8",
+    "name": "Christof Wetterich",
+    "uniid": "fu120",
+    "anztermine": 3,
+    "termine": [
+      "2020-11-26 15:00",
+      "2020-12-03 15:00",
+      "2020-12-17 15:00"
+    ],
+    "termine2": [
+      "Donnerstag 15:00-16:00",
+      "Donnerstag 15:00-16:00",
+      "Donnerstag 15:00-16:00"
+    ]
+  },
+  "9": {
+    "prid": "9",
+    "name": "Cornelis Dullemond",
+    "uniid": "mm120",
+    "anztermine": 3,
+    "termine": [
+      "2020-11-23 17:00",
+      "2020-12-01 15:00",
+      "2020-12-16 17:00"
+    ],
+    "termine2": [
+      "Montag 17:00-18:00",
+      "Dienstag 15:00-16:00",
+      "Mittwoch 17:00-18:00"
+    ]
+  },
+  "10": {
+    "prid": "10",
+    "name": "Dieter W. Heermann",
+    "uniid": "",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 13:00",
+      "2020-12-03 13:00",
+      "2020-12-10 13:00",
+      "2020-12-17 13:00"
+    ],
+    "termine2": [
+      "Donnerstag 13:00-14:00",
+      "Donnerstag 13:00-14:00",
+      "Donnerstag 13:00-14:00",
+      "Donnerstag 13:00-14:00"
+    ]
+  },
+  "11": {
+    "prid": "11",
+    "name": "Eva Grebel",
+    "uniid": "ub120",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 13:00",
+      "2020-12-02 13:00",
+      "2020-12-09 13:00",
+      "2020-12-17 13:00"
+    ],
+    "termine2": [
+      "Donnerstag 13:00-14:00",
+      "Mittwoch 13:00-14:00",
+      "Mittwoch 13:00-14:00",
+      "Donnerstag 13:00-14:00"
+    ]
+  },
+  "12": {
+    "prid": "12",
+    "name": "Fred A. Hamprecht",
+    "uniid": "ql123",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 9:00",
+      "2020-11-30 12:00",
+      "2020-12-11 15:00",
+      "2020-12-14 14:00"
+    ],
+    "termine2": [
+      "Dienstag 9:00-10:00",
+      "Montag 12:00-13:00",
+      "Freitag 15:00-16:00",
+      "Montag 14:00-15:00"
+    ]
+  },
+  "13": {
+    "prid": "13",
+    "name": "Friedrich R\u00f6pke",
+    "uniid": "",
+    "anztermine": 0,
+    "termine": [],
+    "termine2": []
+  },
+  "14": {
+    "prid": "14",
+    "name": "Hans-Christian Schultz-Coulon",
+    "uniid": "qd123",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 19:00",
+      "2020-12-03 19:00",
+      "2020-12-10 19:00",
+      "2020-12-17 19:00"
+    ],
+    "termine2": [
+      "Donnerstag 19:00-20:00",
+      "Donnerstag 19:00-20:00",
+      "Donnerstag 19:00-20:00",
+      "Donnerstag 19:00-20:00"
+    ]
+  },
+  "15": {
+    "prid": "15",
+    "name": "Joachim Wambsgan\u00df",
+    "uniid": "qv119",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 11:00",
+      "2020-12-02 11:00",
+      "2020-12-09 11:00",
+      "2020-12-16 11:00"
+    ],
+    "termine2": [
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00"
+    ]
+  },
+  "16": {
+    "prid": "16",
+    "name": "Joao Seco",
+    "uniid": "rn153",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 10:00",
+      "2020-11-30 10:00",
+      "2020-12-07 10:00",
+      "2020-12-14 10:00"
+    ],
+    "termine2": [
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00"
+    ]
+  },
+  "17": {
+    "prid": "17",
+    "name": "Joerg Jaeckel",
+    "uniid": "j6l",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 18:00",
+      "2020-11-30 18:00",
+      "2020-12-07 18:00",
+      "2020-12-14 18:00"
+    ],
+    "termine2": [
+      "Montag 18:00-19:00",
+      "Montag 18:00-19:00",
+      "Montag 18:00-19:00",
+      "Montag 18:00-19:00"
+    ]
+  },
+  "18": {
+    "prid": "18",
+    "name": "Johanna Stachel",
+    "uniid": "d79",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 10:00",
+      "2020-11-30 10:00",
+      "2020-12-07 10:00",
+      "2020-12-14 10:00"
+    ],
+    "termine2": [
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00"
+    ]
+  },
+  "19": {
+    "prid": "19",
+    "name": "J\u00fcrgen Berges",
+    "uniid": "ke123",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 17:00",
+      "2020-11-30 17:00",
+      "2020-12-07 17:00",
+      "2020-12-14 17:00"
+    ],
+    "termine2": [
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00"
+    ]
+  },
+  "20": {
+    "prid": "20",
+    "name": "Kurt Roth",
+    "uniid": "bz124",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-27 16:00",
+      "2020-12-04 16:00",
+      "2020-12-11 16:00",
+      "2020-12-18 16:00"
+    ],
+    "termine2": [
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00"
+    ]
+  },
+  "21": {
+    "prid": "21",
+    "name": "Lorenzo Masia",
+    "uniid": "",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 14:00",
+      "2020-11-30 14:00",
+      "2020-12-07 14:00",
+      "2020-12-14 14:00"
+    ],
+    "termine2": [
+      "Montag 14:00-15:00",
+      "Montag 14:00-15:00",
+      "Montag 14:00-15:00",
+      "Montag 14:00-15:00"
+    ]
+  },
+  "22": {
+    "prid": "22",
+    "name": "Luca Amendola",
+    "uniid": "us122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 16:00",
+      "2020-11-30 15:00",
+      "2020-12-07 15:00",
+      "2020-12-14 15:00"
+    ],
+    "termine2": [
+      "Mittwoch 16:00-17:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00"
+    ]
+  },
+  "23": {
+    "prid": "23",
+    "name": "Manfred Salmhofer",
+    "uniid": "cq122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 10:00",
+      "2020-11-30 14:00",
+      "2020-12-10 15:00",
+      "2020-12-14 11:00"
+    ],
+    "termine2": [
+      "Montag 10:00-11:00",
+      "Montag 14:00-15:00",
+      "Donnerstag 15:00-16:00",
+      "Montag 11:00-12:00"
+    ]
+  },
+  "24": {
+    "prid": "24",
+    "name": "Markus Oberthaler",
+    "uniid": "na125",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 17:00",
+      "2020-12-01 17:00",
+      "2020-12-08 17:00",
+      "2020-12-15 17:00"
+    ],
+    "termine2": [
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00"
+    ]
+  },
+  "25": {
+    "prid": "25",
+    "name": "Martijn Kemerink",
+    "uniid": "fh241",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 13:00",
+      "2020-11-30 13:00",
+      "2020-12-07 13:00",
+      "2020-12-14 13:00"
+    ],
+    "termine2": [
+      "Montag 13:00-14:00",
+      "Montag 13:00-14:00",
+      "Montag 13:00-14:00",
+      "Montag 13:00-14:00"
+    ]
+  },
+  "26": {
+    "prid": "26",
+    "name": "Matthias Bartelmann",
+    "uniid": "oc125",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 16:00",
+      "2020-12-03 15:00",
+      "2020-12-09 16:00",
+      "2020-12-17 15:00"
+    ],
+    "termine2": [
+      "Mittwoch 16:00-17:00",
+      "Donnerstag 15:00-16:00",
+      "Mittwoch 16:00-17:00",
+      "Donnerstag 15:00-16:00"
+    ]
+  },
+  "27": {
+    "prid": "27",
+    "name": "Matthias Weidem\u00fcller",
+    "uniid": "gb122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-27 11:00",
+      "2020-12-04 11:00",
+      "2020-12-11 16:00",
+      "2020-12-18 16:00"
+    ],
+    "termine2": [
+      "Freitag 11:00-12:00",
+      "Freitag 11:00-12:00",
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00"
+    ]
+  },
+  "28": {
+    "prid": "28",
+    "name": "Maurits Haverkort",
+    "uniid": "ch150",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 11:00",
+      "2020-12-02 11:00",
+      "2020-12-09 11:00",
+      "2020-12-16 11:00"
+    ],
+    "termine2": [
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00"
+    ]
+  },
+  "29": {
+    "prid": "29",
+    "name": "Norbert Christlieb",
+    "uniid": "hi121",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 15:00",
+      "2020-12-01 15:00",
+      "2020-12-08 15:00",
+      "2020-12-15 15:00"
+    ],
+    "termine2": [
+      "Dienstag 15:00-16:00",
+      "Dienstag 15:00-16:00",
+      "Dienstag 15:00-16:00",
+      "Dienstag 15:00-16:00"
+    ]
+  },
+  "30": {
+    "prid": "30",
+    "name": "Norbert Frank",
+    "uniid": "wb124",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-26 9:00",
+      "2020-12-03 9:00",
+      "2020-12-10 9:00",
+      "2020-12-17 9:00"
+    ],
+    "termine2": [
+      "Donnerstag 9:00-10:00",
+      "Donnerstag 9:00-10:00",
+      "Donnerstag 9:00-10:00",
+      "Donnerstag 9:00-10:00"
+    ]
+  },
+  "31": {
+    "prid": "31",
+    "name": "Norbert Herrmann",
+    "uniid": "eg121",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-27 16:00",
+      "2020-12-04 16:00",
+      "2020-12-11 16:00",
+      "2020-12-18 16:00"
+    ],
+    "termine2": [
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00",
+      "Freitag 16:00-17:00"
+    ]
+  },
+  "32": {
+    "prid": "32",
+    "name": "Peter Fischer",
+    "uniid": "al122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 11:00",
+      "2020-12-01 11:00",
+      "2020-12-10 11:00",
+      "2020-12-15 11:00"
+    ],
+    "termine2": [
+      "Dienstag 11:00-12:00",
+      "Dienstag 11:00-12:00",
+      "Donnerstag 11:00-12:00",
+      "Dienstag 11:00-12:00"
+    ]
+  },
+  "33": {
+    "prid": "33",
+    "name": "Ralf S. Klessen",
+    "uniid": "cu120",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 10:00",
+      "2020-11-30 10:00",
+      "2020-12-11 9:00",
+      "2020-12-18 9:00"
+    ],
+    "termine2": [
+      "Montag 10:00-11:00",
+      "Montag 10:00-11:00",
+      "Freitag 9:00-10:00",
+      "Freitag 9:00-10:00"
+    ]
+  },
+  "34": {
+    "prid": "34",
+    "name": "Robert Strzodka",
+    "uniid": "ir129",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-25 10:00",
+      "2020-12-02 10:00",
+      "2020-12-09 10:00",
+      "2020-12-16 10:00"
+    ],
+    "termine2": [
+      "Mittwoch 10:00-11:00",
+      "Mittwoch 10:00-11:00",
+      "Mittwoch 10:00-11:00",
+      "Mittwoch 10:00-11:00"
+    ]
+  },
+  "35": {
+    "prid": "35",
+    "name": "R\u00fcdiger Klingeler",
+    "uniid": "dr123",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 16:00",
+      "2020-11-30 15:00",
+      "2020-12-07 15:00",
+      "2020-12-14 15:00"
+    ],
+    "termine2": [
+      "Montag 16:00-16:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00",
+      "Montag 15:00-16:00"
+    ]
+  },
+  "36": {
+    "prid": "36",
+    "name": "Selim Jochim",
+    "uniid": "rm120",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 16:00",
+      "2020-12-02 16:00",
+      "2020-12-07 16:00",
+      "2020-12-14 16:00"
+    ],
+    "termine2": [
+      "Montag 16:00-17:00",
+      "Mittwoch 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00"
+    ]
+  },
+  "37": {
+    "prid": "37",
+    "name": "Silvia Masciocchi",
+    "uniid": "",
+    "anztermine": 3,
+    "termine": [
+      "2020-11-27 15:00",
+      "2020-12-02 11:00",
+      "2020-12-09 11:00"
+    ],
+    "termine2": [
+      "Freitag 15:00-16:00",
+      "Mittwoch 11:00-12:00",
+      "Mittwoch 11:00-12:00"
+    ]
+  },
+  "38": {
+    "prid": "38",
+    "name": "Stephanie Hansmann-Menzemer",
+    "uniid": "bu120",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 14:00",
+      "2020-12-01 14:00",
+      "2020-12-08 14:00",
+      "2020-12-15 14:00"
+    ],
+    "termine2": [
+      "Dienstag 14:00-15:00",
+      "Dienstag 14:00-15:00",
+      "Dienstag 14:00-15:00",
+      "Dienstag 14:00-15:00"
+    ]
+  },
+  "39": {
+    "prid": "39",
+    "name": "Thomas Leisner",
+    "uniid": "dv264",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-24 17:00",
+      "2020-12-01 17:00",
+      "2020-12-08 17:00",
+      "2020-12-15 17:00"
+    ],
+    "termine2": [
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00",
+      "Dienstag 17:00-18:00"
+    ]
+  },
+  "40": {
+    "prid": "40",
+    "name": "Tilman Plehn",
+    "uniid": "ia122",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-27 15:00",
+      "2020-12-04 15:00",
+      "2020-12-11 15:00",
+      "2020-12-18 15:00"
+    ],
+    "termine2": [
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00",
+      "Freitag 15:00-16:00"
+    ]
+  },
+  "41": {
+    "prid": "41",
+    "name": "Ulrich Schwarz",
+    "uniid": "sw122",
+    "anztermine": 3,
+    "termine": [
+      "2020-11-25 18:00",
+      "2020-12-04 15:00",
+      "2020-12-09 18:00"
+    ],
+    "termine2": [
+      "Mittwoch 18:00-19:00",
+      "Freitag 15:00-16:00",
+      "Mittwoch 18:00-19:00"
+    ]
+  },
+  "42": {
+    "prid": "42",
+    "name": "Ulrich Uwer",
+    "uniid": "",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 17:00",
+      "2020-11-30 17:00",
+      "2020-12-07 17:00",
+      "2020-12-14 17:00"
+    ],
+    "termine2": [
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00",
+      "Montag 17:00-18:00"
+    ]
+  },
+  "43": {
+    "prid": "43",
+    "name": "Werner Aeschbach",
+    "uniid": "bh124",
+    "anztermine": 4,
+    "termine": [
+      "2020-11-23 16:00",
+      "2020-11-30 16:00",
+      "2020-12-07 16:00",
+      "2020-12-14 16:00"
+    ],
+    "termine2": [
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00",
+      "Montag 16:00-17:00"
+    ]
+  }
+}
