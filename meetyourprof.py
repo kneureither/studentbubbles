@@ -4,10 +4,13 @@ import numpy as np
 import json
 import heapq
 from classes.professordate import Professor
+from datetime import date
 
-inputdata = "data/studenten1.json"
+inputdata = "data/studenten2.json"
 inputprofs = "data/professoren.json"
 RAND_SORT = True
+ONLY_FIRST_WEEK = True
+
 
 #### DATE DATA
 # parse json input to numpy format
@@ -46,23 +49,36 @@ profids=[]
 profnames = []
 profdatecnts = []
 profdates = []
+profweeks = []
 
 # get data
 idx=1
 for key in profdata:
     prof = profdata[key]
 
+    profdate = prof['termine']
+    weeks = []
+
+    # get the calendar week for each date
+    for datestring in profdate:
+        isodate = date.fromisoformat(datestring.split(' ')[0])
+        weeks.append(isodate.isocalendar()[1] - 47)
+
     profids.append(int(prof['prid']))
     profnames.append(prof['name'])
     profdatecnts.append(prof['anztermine'])
-    profdates.append(prof['termine'])
+    profdates.append(profdate)
+    profweeks.append(weeks)
 
     # just a check
     assert idx == int(prof['prid'])
     idx += 1
 
 
-prof_capacities = [6*dates for dates in profdatecnts]
+if ONLY_FIRST_WEEK:
+    prof_capacities = [6 for dates in profdatecnts]
+else:
+    prof_capacities = [6*dates for dates in profdatecnts]
 preferences = np.array(prefs)
 
 assert len(prof_capacities) == len(preferences[0])
@@ -83,8 +99,12 @@ Professors = []
 for prof_idx in range(len(profids)):
     assert prof_idx + 1 == profids[prof_idx]
     profstuds = np.nonzero(association[:, prof_idx])[0]
-    Prof = Professor(stud_cnt=len(profstuds), student_lst=profstuds)
+    prof_stud_cnts[prof_idx] = len(profstuds)
+    Prof = Professor(stud_cnt=len(profstuds), student_lst=profstuds, name=profnames[prof_idx], optim_dates=False)
     Professors.append(Prof)
+
+
+print("(INFO)  : Prof student counts", prof_stud_cnts)
 
 
 if RAND_SORT:
@@ -98,17 +118,37 @@ else:
     # get data from association matrix
     stud_idx = 0
     for studentasn in association:
-        studprofs = np.nonzero(studentasn)
+        studprofs = np.nonzero(studentasn)[0]
         studid = studids[stud_idx]
-        dates = tuple()
-        stud_idx += 1
-        print("ASN / profs / id", studentasn, studprofs[0], studid)
+        # print("ASN / profs / id", studentasn, studprofs[0], studid)
 
-        heapq.heappush(stud_heap, (0, studid, tuple(studprofs), dates))
+        heapq.heappush(stud_heap, (0, stud_idx, studid, tuple(studprofs), [-1, -1]))
+        stud_idx += 1
 
 
     while stud_heap:
-        pass
+        visited, stud_idx, studid, studprofs, dates = heapq.heappop(stud_heap)
+
+        if visited > 2:
+            # added all possible students
+            break
+
+        success = False
+
+        for i in range(len(studprofs)):
+            if dates[i] == -1:
+                Prof = Professors[studprofs[i]]
+                if not Prof.full():
+                    date = Prof.getDateForStudent(stud_idx)
+                    dates[i] = date
+                    heapq.heappush(stud_heap, (visited+1, stud_idx, studid, studprofs, dates))
+                    success = True
+                    break
+
+        if not success:
+            heapq.heappush(stud_heap, (visited + 1, stud_idx, studid, studprofs, dates))
+
+
 
 
 #### READ OUT DATES FROM PROF CLASSES
@@ -117,10 +157,10 @@ membership = np.zeros((len(studids), len(profids)), dtype=np.int32)
 
 prof_idx = 0
 for Prof in Professors:
-    date_idx = 1
+    date_idx = 0
     for date in Prof.dates:
         for stud_idx in date:
-            membership[stud_idx][prof_idx] = date_idx
+            membership[stud_idx][prof_idx] = profweeks[prof_idx][date_idx]
         date_idx += 1
     prof_idx += 1
 
@@ -128,15 +168,88 @@ for Prof in Professors:
 result = dict()
 
 for i in range(len(membership)):
-    print(membership[i], preferences[i])
+    # print(membership[i], preferences[i])
     studdict = dict(id=studids[i], fachsem=fachsems[i], prefs=preferences[i].tolist(), dates=membership[i].tolist())
     result[str(i)] = studdict
-
-print(result)
 
 with open('data/result.json', 'w') as file:
     json.dump(result, file)
     file.close()
+
+
+#### SOME STATS:
+
+    cnt_stud_w_two_dates = 0
+    cnt_stud_w_one_dates = 0
+    cnt_stud_w_no_dates = 0
+    cnt_full_dates = 0
+    cnt_nfull_dates = 0
+    cnt_empty_dates = 0
+    cnt_overflow_studs = 0
+
+    cnt_stud_w_two_full_dates = 0
+    cnt_stud_w_one_full_dates = 0
+    cnt_stud_w_no_full_dates = 0
+
+    studs_with_no_date = []
+
+    for stud_idx in range(len(membership)):
+        studdates = np.nonzero(membership[stud_idx])[0]
+        if len(studdates) is 2:
+            cnt_stud_w_two_dates += 1
+        elif len(studdates) is 1:
+            cnt_stud_w_one_dates += 1
+        else:
+            cnt_stud_w_no_dates += 1
+
+        full_date = 0
+        for prof in studdates:
+            for date in Professors[prof].dates:
+                if stud_idx in date and len(date) == 6:
+                    full_date += 1
+
+        if full_date == 0:
+            cnt_stud_w_no_full_dates += 1
+            studs_with_no_date.append(stud_idx)
+        elif full_date == 1:
+            cnt_stud_w_one_full_dates += 1
+        else:
+            cnt_stud_w_two_full_dates += 1
+
+
+    for prof_idx in range(len(membership[0])):
+        Professors[prof_idx].printMyDates()
+        profdates = np.nonzero(membership[:, prof_idx])[0]
+        if len(profdates) is 6:
+            cnt_full_dates += 1
+        elif len(profdates) is 0:
+            cnt_empty_dates += 1
+        elif len(profdates) < 6:
+            cnt_nfull_dates += 1
+            cnt_overflow_studs += len(profdates)
+        else:
+            pass
+
+
+    print("two date students: ", cnt_stud_w_two_dates)
+    print("one date students: ", cnt_stud_w_one_dates)
+    print("no date students: ", cnt_stud_w_no_dates)
+
+    print("two full date students: ", cnt_stud_w_two_full_dates)
+    print("one full date students: ", cnt_stud_w_one_full_dates)
+    print("no full date students: ", cnt_stud_w_no_full_dates)
+    print("studs with no full date:", studs_with_no_date)
+
+    print("full dates: ", cnt_full_dates)
+    print("not full dates: ", cnt_nfull_dates)
+    print("empty dates: ", cnt_empty_dates)
+    print("overflow studs: ", cnt_overflow_studs)
+
+
+
+
+
+
 
 
 

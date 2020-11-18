@@ -3,7 +3,9 @@ import queue
 
 class Professor:
 
-    def __init__(self,stud_cnt, student_lst=None, optim_dates=True, date_count=4):
+    def __init__(self, stud_cnt, student_lst=None, optim_dates=True, date_count=4, name="default"):
+
+        self.name = name
 
         if student_lst is not None:
             assert stud_cnt == len(student_lst)
@@ -17,7 +19,7 @@ class Professor:
 
         if optim_dates:
             if self.student_cnt < self.min_date_members:
-                print("(ERROR) : less then ", self.min_date_members, " students for prof.")
+                print("(ERROR) [", self.name, "]: less then ", self.min_date_members, " students for prof.")
             elif self.student_cnt <= 6:
                 self.max_date_members = 6
                 self.date_cnt = 1
@@ -41,8 +43,8 @@ class Professor:
                 self.date_cnt = 4
 
         else:
-            self.date_cnt = stud_cnt // 6
-            print("(STATUS) : Students ", self.student_cnt, " dates ", self.date_cnt)
+            self.date_cnt = stud_cnt // 6 + 1
+            print("(STATUS) [", self.name, "]: Students ", self.student_cnt, " dates ", self.date_cnt)
 
 
         self.dates = [[] for i in range(self.date_cnt)]
@@ -64,8 +66,11 @@ class Professor:
         for i in range(self.date_cnt):
                 while not stud_q.empty() and len(self.dates[i]) < self.max_date_members:
                     self.dates[i].append(stud_q.get())
+                    self.added_students += 1
 
-        print(self.dates)
+        if self.student_cnt is not 0 and not self.full():
+            print("(STATUS) [", self.name, "]:", self.dates)
+
         return self.dates
 
     def getDateForStudent(self, stud):
@@ -76,26 +81,27 @@ class Professor:
 
     def testDateForStudent(self, stud):
         group = self.added_students // self.max_date_members
-        print("stud: ", stud, "group: ", group)
+        # print("[", self.name, "] stud: ", stud, "group: ", group)
         assert group <= self.date_cnt
         return group
 
     def full(self):
-        return self.added_students < self.date_cnt * self.max_date_members
+        full = not (self.added_students < self.date_cnt * self.max_date_members)
+        if full:
+            pass
+            # print("[", self.name, "] I am full. Student count ", self.added_students)
+        return full
 
     def getRandIdx(self):
         return randint(0, len(self.students)-1)
+
+    def printMyDates(self):
+        print("[", self.name, "] ", self.dates)
 
 
 
 class Student:
     pass
-
-    # def __init__(self, id, studprofs):
-    #     self.profs = studprofs
-    #     self.id = id
-    #     self.datecnt = 0
-    #     self.dates =
 
 
 
