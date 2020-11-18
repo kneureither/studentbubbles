@@ -3,7 +3,7 @@ import queue
 
 class Professor:
 
-    def __init__(self,stud_cnt, student_lst=None, date_count=4):
+    def __init__(self,stud_cnt, student_lst=None, optim_dates=True, date_count=4):
 
         if student_lst is not None:
             assert stud_cnt == len(student_lst)
@@ -15,29 +15,34 @@ class Professor:
         self.min_date_members = 0
         self.added_students = 0
 
-        if self.student_cnt < self.min_date_members:
-            print("Error: less then ", self.min_date_members, " students for prof.")
-        elif self.student_cnt <= 6:
-            self.max_date_members = 6
-            self.date_cnt = 1
-        elif self.student_cnt <= 9:
-            self.max_date_members = 5
-            self.date_cnt = 2
-        elif self.student_cnt <= 12:
-            self.max_date_members = 6
-            self.date_cnt = 2
-        elif self.student_cnt <= 15:
-            self.max_date_members = 5
-            self.date_cnt = 3
-        elif self.student_cnt <= 18:
-            self.max_date_members = 6
-            self.date_cnt = 3
-        elif self.student_cnt <= 20:
-            self.max_date_members = 5
-            self.date_cnt = 4
-        elif self.student_cnt <= 24:
-            self.max_date_members = 6
-            self.date_cnt = 4
+        if optim_dates:
+            if self.student_cnt < self.min_date_members:
+                print("(ERROR) : less then ", self.min_date_members, " students for prof.")
+            elif self.student_cnt <= 6:
+                self.max_date_members = 6
+                self.date_cnt = 1
+            elif self.student_cnt <= 9:
+                self.max_date_members = 5
+                self.date_cnt = 2
+            elif self.student_cnt <= 12:
+                self.max_date_members = 6
+                self.date_cnt = 2
+            elif self.student_cnt <= 15:
+                self.max_date_members = 5
+                self.date_cnt = 3
+            elif self.student_cnt <= 18:
+                self.max_date_members = 6
+                self.date_cnt = 3
+            elif self.student_cnt <= 20:
+                self.max_date_members = 5
+                self.date_cnt = 4
+            elif self.student_cnt <= 24:
+                self.max_date_members = 6
+                self.date_cnt = 4
+
+        else:
+            self.date_cnt = stud_cnt // 6
+            print("(STATUS) : Students ", self.student_cnt, " dates ", self.date_cnt)
 
 
         self.dates = [[] for i in range(self.date_cnt)]
@@ -66,6 +71,7 @@ class Professor:
     def getDateForStudent(self, stud):
         group = self.testDateForStudent(stud)
         self.added_students += 1
+        self.dates[group].append(stud) # add to group
         return group
 
     def testDateForStudent(self, stud):
@@ -73,6 +79,9 @@ class Professor:
         print("stud: ", stud, "group: ", group)
         assert group <= self.date_cnt
         return group
+
+    def full(self):
+        return self.added_students < self.date_cnt * self.max_date_members
 
     def getRandIdx(self):
         return randint(0, len(self.students)-1)

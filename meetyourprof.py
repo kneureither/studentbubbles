@@ -5,10 +5,12 @@ import json
 import heapq
 from classes.professordate import Professor
 
+inputdata = "data/studenten1.json"
+inputprofs = "data/professoren.json"
+RAND_SORT = True
+
 #### DATE DATA
 # parse json input to numpy format
-inputdata = "data/exportdata_test.json"
-
 with open(inputdata) as input:
     exportdata = json.load(input)
 
@@ -36,8 +38,6 @@ for key in exportdata:
 
 
 #### PROF DATA
-inputprofs = "data/professoren_test.json"
-
 with open(inputprofs) as input:
     profdata = json.load(input)
 
@@ -77,23 +77,6 @@ stud_heap = []
 # how many students are associated to each prof
 prof_stud_cnts = [0 for i in range(len(profids))]
 
-
-#### INTELLIGENT SORTING
-# get data from association matrix
-stud_idx = 0
-for studentasn in association:
-    studprofs = np.nonzero(studentasn)
-    studid = studids[stud_idx]
-    stud_idx += 1
-    print("ASN / profs / id", studentasn, studprofs[0], studid)
-
-    # heapq.heappush(stud_heap, (0, studid, tuple(studprofs), (0, 0)))
-
-    for prof in studprofs[0]:
-        prof_stud_cnts[prof] += 1
-
-
-##### RANDOM SORTING
 # List for prof classes, to handle the group size and assignment
 Professors = []
 
@@ -101,11 +84,34 @@ for prof_idx in range(len(profids)):
     assert prof_idx + 1 == profids[prof_idx]
     profstuds = np.nonzero(association[:, prof_idx])[0]
     Prof = Professor(stud_cnt=len(profstuds), student_lst=profstuds)
-    Prof.distributeRandom()
     Professors.append(Prof)
 
 
-##### READ OUT DATES FROM PROF CLASSES
+if RAND_SORT:
+
+    #### RANDOM SORTING
+    for Prof in Professors:
+        Prof.distributeRandom()
+
+else:
+    #### INTELLIGENT SORTING
+    # get data from association matrix
+    stud_idx = 0
+    for studentasn in association:
+        studprofs = np.nonzero(studentasn)
+        studid = studids[stud_idx]
+        dates = tuple()
+        stud_idx += 1
+        print("ASN / profs / id", studentasn, studprofs[0], studid)
+
+        heapq.heappush(stud_heap, (0, studid, tuple(studprofs), dates))
+
+
+    while stud_heap:
+        pass
+
+
+#### READ OUT DATES FROM PROF CLASSES
 
 membership = np.zeros((len(studids), len(profids)), dtype=np.int32)
 
