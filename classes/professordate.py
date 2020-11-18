@@ -43,7 +43,9 @@ class Professor:
                 self.date_cnt = 4
 
         else:
-            self.date_cnt = stud_cnt // 6 + 1
+            self.date_cnt = stud_cnt // 6
+            if stud_cnt % 6 is not 0:
+                self.date_cnt += 1
             print("(STATUS) [", self.name, "]: Students ", self.student_cnt, " dates ", self.date_cnt)
 
 
@@ -85,11 +87,11 @@ class Professor:
         assert group <= self.date_cnt
         return group
 
-    def full(self):
-        full = not (self.added_students < self.date_cnt * self.max_date_members)
+    def full(self, prints=False):
+        full = (not (self.added_students < self.date_cnt * self.max_date_members))
         if full:
-            pass
-            # print("[", self.name, "] I am full. Student count ", self.added_students)
+            if prints:
+                print("[", self.name, "] I am full. Student count ", self.added_students)
         return full
 
     def getRandIdx(self):
@@ -98,6 +100,15 @@ class Professor:
     def printMyDates(self):
         print("[", self.name, "] ", self.dates)
 
+    def popStudent(self):
+        student = self.dates[-1][-1]
+        del self.dates[-1][-1]
+        self.added_students -= 1
+        print("[", self.name, "] student removed: ", student)
+        if len(self.dates[-1]) == 0:
+            del self.dates[-1]
+            self.date_cnt -= 1
+        return student
 
 
 class Student:

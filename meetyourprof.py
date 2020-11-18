@@ -8,8 +8,9 @@ from datetime import date
 
 inputdata = "data/studenten2.json"
 inputprofs = "data/professoren.json"
-RAND_SORT = True
+RAND_SORT = False
 ONLY_FIRST_WEEK = True
+OPTIMISE_DATES = True
 
 
 #### DATE DATA
@@ -150,6 +151,49 @@ else:
 
 
 
+#### IMPROVE DATES BY FILLING THEM UP
+
+
+if OPTIMISE_DATES:
+    incomplete_dates = []
+
+    for prof_idx in range(len(Professors)):
+        Prof = Professors[prof_idx]
+        if not Prof.full():
+            pending_date = Prof.dates[len(Prof.dates)-1]
+            spots = 6 - len(pending_date)
+            profdate = spots, prof_idx, Prof.name, pending_date
+            incomplete_dates.append(profdate)
+
+
+    print("(STATUS) : These dates must be optimized: ")
+    for pd in incomplete_dates:
+        print(pd)
+
+    incomplete_dates = sorted(incomplete_dates, key=lambda date_tuple: date_tuple[0])
+
+    while len(incomplete_dates) > 1:
+        first = incomplete_dates[0]
+        last = incomplete_dates[-1]
+
+        print("First ", first)
+        print ("Last ", last)
+
+        Prof_add = Professors[first[1]]
+        Prof_red = Professors[last[1]]
+
+        Prof_add.getDateForStudent(Prof_red.popStudent())
+
+        if Prof_red.full(prints=False):
+            del incomplete_dates[-1]
+
+        if Prof_add.full(prints=False):
+            del incomplete_dates[0]
+
+        print(incomplete_dates)
+
+
+
 
 #### READ OUT DATES FROM PROF CLASSES
 
@@ -240,6 +284,7 @@ with open('data/result.json', 'w') as file:
     print("no full date students: ", cnt_stud_w_no_full_dates)
     print("studs with no full date:", studs_with_no_date)
 
+    print("\n---Only valid for first week mode---")
     print("full dates: ", cnt_full_dates)
     print("not full dates: ", cnt_nfull_dates)
     print("empty dates: ", cnt_empty_dates)
