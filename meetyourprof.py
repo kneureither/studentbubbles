@@ -252,9 +252,174 @@ for Prof in Professors:
         date_idx += 1
     prof_idx += 1
 
-##### STORE RESULT AS JSON FILE
+
+#### SOME STATS:
+
+cnt_stud_w_two_dates = 0
+cnt_stud_w_one_dates = 0
+cnt_stud_w_no_dates = 0
+cnt_full_dates = 0
+cnt_nfull_dates = 0
+cnt_empty_dates = 0
+cnt_overflow_studs = 0
+
+cnt_stud_w_two_full_dates = 0
+cnt_stud_w_one_full_dates = 0
+cnt_stud_w_no_full_dates = 0
+
+studs_with_no_date = []
+studs_with_one_date = []
+studs_with_two_date = []
+
+date_fill_count = [0 for i in range(7)]
+
+for stud_idx in range(len(membership)):
+    studdates = np.nonzero(membership[stud_idx])[0]
+    if len(studdates) is 2:
+        cnt_stud_w_two_dates += 1
+    elif len(studdates) is 1:
+        cnt_stud_w_one_dates += 1
+    else:
+        cnt_stud_w_no_dates += 1
+
+    full_date = 0
+    for prof in studdates:
+        for date in Professors[prof].dates:
+            if stud_idx in date and len(date) == 6:
+                full_date += 1
+
+    if full_date == 0:
+        cnt_stud_w_no_full_dates += 1
+        studs_with_no_date.append(stud_idx)
+    elif full_date == 1:
+        cnt_stud_w_one_full_dates += 1
+        studs_with_one_date.append(stud_idx)
+    else:
+        cnt_stud_w_two_full_dates += 1
+        studs_with_two_date.append(stud_idx)
+
+
+for prof_idx in range(len(membership[0])):
+    print()
+    Professors[prof_idx].printMyDates()
+    profdates = np.nonzero(membership[:, prof_idx])[0]
+    # print(profdates, len(profdates))
+
+    # basic check how many dates are full / empty / incomplete
+    if len(profdates) is 0:
+        cnt_empty_dates += 1
+    elif len(profdates) % 6 is 0:
+        cnt_full_dates += len(profdates) // 6
+    elif not len(profdates) % 6 is 0:
+        cnt_nfull_dates += 1
+        cnt_overflow_studs += len(profdates) % 6
+    else:
+        pass
+
+    # detailed check
+    cnt_week_stud = [0 for i in range(4)]
+
+    for stud in profdates:
+        # print(stud, prof_idx)
+        # print(membership[stud][prof_idx])
+        cnt_week_stud[membership[stud][prof_idx]-1] += 1
+
+    for datefill in cnt_week_stud:
+        if datefill is not 0:
+            date_fill_count[datefill] += 1
+
+# calculate number of dates
+
+datecount = 0
+for d in date_fill_count:
+    print(d)
+    datecount += d
+
+print("two date students: ", cnt_stud_w_two_dates)
+print("one date students: ", cnt_stud_w_one_dates)
+print("no date students: ", cnt_stud_w_no_dates)
+
+print("two full date students: ", cnt_stud_w_two_full_dates)
+print("one full date students: ", cnt_stud_w_one_full_dates)
+print("no full date students: ", cnt_stud_w_no_full_dates)
+print("studs with no full date:", studs_with_no_date)
+print("studs with one full date:", studs_with_one_date)
+print("studs with two full date:", studs_with_two_date)
+
+print("\n---date stud stats---")
+print("full dates: ", cnt_full_dates)
+print("not full dates: ", cnt_nfull_dates)
+print("empty dates: ", cnt_empty_dates)
+print("overflow stud places: ", cnt_overflow_studs)
+
+
+print("\n--- valid ---")
+print("date fill states:", date_fill_count)
+
+
+cnt_stud_got_their_prefs = [0 for i in range(3)]
+
+for i in range(len(preferences)):
+    prefs = preferences[i]
+    # print(prefs)
+    membs = membership[i]
+    # print(membs)
+
+    match = 0
+    no_match = 0
+
+    for p, m in zip(prefs, membs):
+        if (p == 1 or p==3) and m > 0:
+            match += 1
+        elif m > 0:
+            no_match += 1
+        else:
+            pass
+
+    if match == 2 and no_match == 0:
+        cnt_stud_got_their_prefs[2] += 1
+    elif match == 1 and no_match == 1:
+        cnt_stud_got_their_prefs[1] += 1
+    elif match == 0 and no_match == 2:
+        cnt_stud_got_their_prefs[0] += 1
+    else:
+        print("Something went wrong! Student ", i)
+        print(match, no_match)
+        print(membs)
+        print(prefs)
+        print("ID:", studids[i])
+        print()
+
+print("Student got so many of their preferences", cnt_stud_got_their_prefs)
+
+stud_ids_no_full_date = [studids[i] for i in studs_with_no_date]
+stud_ids_one_full_date = [studids[i] for i in studs_with_one_date]
+stud_ids_two_full_dates = [studids[i] for i in studs_with_two_date]
+
+stud_sem_no_full_date = [fachsems[i] for i in studs_with_no_date]
+stud_sem_one_full_date = [fachsems[i] for i in studs_with_one_date]
+stud_sem_two_full_dates = [fachsems[i] for i in studs_with_two_date]
+
+
+#### write stats to result
+
+stats = dict(date_cnt=datecount,
+             date_participant_cnts_comment="idx in list is date member count, value how many such dates exist",
+             date_participant_cnts=date_fill_count,
+             stud_result_pref_accordance_comment="prefs satisfied [none, one, two]",
+             stud_result_pref_accordance=cnt_stud_got_their_prefs,
+             stud_ids_two_full_dates=stud_ids_two_full_dates,
+             stud_sem_two_full_dates=stud_sem_two_full_dates,
+             stud_ids_one_full_date=stud_ids_one_full_date,
+             stud_sem_one_full_date=stud_sem_one_full_date,
+             stud_ids_no_full_date=stud_ids_no_full_date,
+             stud_sem_no_full_date=stud_sem_no_full_date)
+
+##### STORE RESULT AS DICT
 
 result = dict()
+
+result["stats"] = stats
 
 for i in range(len(membership)):
     # print(membership[i], preferences[i])
@@ -264,142 +429,5 @@ for i in range(len(membership)):
 with open('data/result.json', 'w') as file:
     json.dump(result, file)
     file.close()
-
-#### SOME STATS:
-
-    cnt_stud_w_two_dates = 0
-    cnt_stud_w_one_dates = 0
-    cnt_stud_w_no_dates = 0
-    cnt_full_dates = 0
-    cnt_nfull_dates = 0
-    cnt_empty_dates = 0
-    cnt_overflow_studs = 0
-
-    cnt_stud_w_two_full_dates = 0
-    cnt_stud_w_one_full_dates = 0
-    cnt_stud_w_no_full_dates = 0
-
-    studs_with_no_date = []
-    studs_with_one_date = []
-    studs_with_two_date = []
-
-    date_fill_count = [0 for i in range(7)]
-
-    for stud_idx in range(len(membership)):
-        studdates = np.nonzero(membership[stud_idx])[0]
-        if len(studdates) is 2:
-            cnt_stud_w_two_dates += 1
-        elif len(studdates) is 1:
-            cnt_stud_w_one_dates += 1
-        else:
-            cnt_stud_w_no_dates += 1
-
-        full_date = 0
-        for prof in studdates:
-            for date in Professors[prof].dates:
-                if stud_idx in date and len(date) == 6:
-                    full_date += 1
-
-        if full_date == 0:
-            cnt_stud_w_no_full_dates += 1
-            studs_with_no_date.append(stud_idx)
-        elif full_date == 1:
-            cnt_stud_w_one_full_dates += 1
-            studs_with_one_date.append(stud_idx)
-        else:
-            cnt_stud_w_two_full_dates += 1
-            studs_with_two_date.append(stud_idx)
-
-
-    for prof_idx in range(len(membership[0])):
-        print()
-        Professors[prof_idx].printMyDates()
-        profdates = np.nonzero(membership[:, prof_idx])[0]
-        # print(profdates, len(profdates))
-
-        # basic check how many dates are full / empty / incomplete
-        if len(profdates) is 0:
-            cnt_empty_dates += 1
-        elif len(profdates) % 6 is 0:
-            cnt_full_dates += len(profdates) // 6
-        elif not len(profdates) % 6 is 0:
-            cnt_nfull_dates += 1
-            cnt_overflow_studs += len(profdates) % 6
-        else:
-            pass
-
-        # detailed check
-        cnt_week_stud = [0 for i in range(4)]
-
-        for stud in profdates:
-            # print(stud, prof_idx)
-            # print(membership[stud][prof_idx])
-            cnt_week_stud[membership[stud][prof_idx]-1] += 1
-
-        for datefill in cnt_week_stud:
-            if datefill is not 0:
-                date_fill_count[datefill] += 1
-
-
-
-    print("two date students: ", cnt_stud_w_two_dates)
-    print("one date students: ", cnt_stud_w_one_dates)
-    print("no date students: ", cnt_stud_w_no_dates)
-
-    print("two full date students: ", cnt_stud_w_two_full_dates)
-    print("one full date students: ", cnt_stud_w_one_full_dates)
-    print("no full date students: ", cnt_stud_w_no_full_dates)
-    print("studs with no full date:", studs_with_no_date)
-    print("studs with one full date:", studs_with_one_date)
-    print("studs with two full date:", studs_with_two_date)
-
-    print("\n---date stud stats---")
-    print("full dates: ", cnt_full_dates)
-    print("not full dates: ", cnt_nfull_dates)
-    print("empty dates: ", cnt_empty_dates)
-    print("overflow stud places: ", cnt_overflow_studs)
-
-
-    print("\n--- valid ---")
-    print("date fill states:", date_fill_count)
-
-
-    cnt_stud_got_their_prefs = [0 for i in range(3)]
-
-    for i in range(len(preferences)):
-        prefs = preferences[i]
-        # print(prefs)
-        membs = membership[i]
-        # print(membs)
-
-        match = 0
-        no_match = 0
-
-        for p, m in zip(prefs, membs):
-            if (p == 1 or p==3) and m > 0:
-                match += 1
-            elif m > 0:
-                no_match += 1
-            else:
-                pass
-
-        if match == 2 and no_match == 0:
-            cnt_stud_got_their_prefs[2] += 1
-        elif match == 1 and no_match == 1:
-            cnt_stud_got_their_prefs[1] += 1
-        elif match == 0 and no_match == 2:
-            cnt_stud_got_their_prefs[0] += 1
-        else:
-            print("Something went wrong! Student ", i)
-            print(match, no_match)
-            print(membs)
-            print(prefs)
-            print("ID:", studids[i])
-            print()
-
-    print("Student got so many of their preferences", cnt_stud_got_their_prefs)
-
-
-
 
 
