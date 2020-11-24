@@ -6,11 +6,12 @@ import heapq
 from classes.professordate import Professor
 from datetime import date
 
-inputdata = "data/studenten2.json"
+inputdata = "data/studenten5.json"
 inputprofs = "data/professoren.json"
 RAND_SORT = False
-ONLY_FIRST_WEEK = True
+ONLY_FIRST_WEEK = False
 OPTIMISE_DATES = True
+EXCLUDE_WEEKS = [1]
 
 
 #### DATE DATA
@@ -58,6 +59,7 @@ for key in profdata:
     prof = profdata[key]
 
     profdate = prof['termine']
+    datecnt = prof['anztermine']
     weeks = []
 
     # get the calendar week for each date
@@ -65,9 +67,22 @@ for key in profdata:
         isodate = date.fromisoformat(datestring.split(' ')[0])
         weeks.append(isodate.isocalendar()[1] - 47)
 
+    # check if weeks are excluded and refine data
+    for week in weeks:
+        if week in EXCLUDE_WEEKS:
+            i = weeks.index(week)
+            del profdate[i]
+            datecnt -= 1
+            del weeks[i]
+            print("(STATUS) : Prepare data ", prof['name'], "deleted date in week", i+1)
+
+    # check format
+    assert datecnt == len(profdate) == len(weeks)
+
     profids.append(int(prof['prid']))
     profnames.append(prof['name'])
-    profdatecnts.append(prof['anztermine'])
+
+    profdatecnts.append(datecnt)
     profdates.append(profdate)
     profweeks.append(weeks)
 
@@ -165,19 +180,19 @@ if OPTIMISE_DATES:
             profdate = spots, prof_idx, Prof.name, pending_date
             incomplete_dates.append(profdate)
 
+    incomplete_dates = sorted(incomplete_dates, key=lambda date_tuple: date_tuple[0])
 
-    print("(STATUS) : These dates must be optimized: ")
+    print("(STATUS) : These dates must be optimised: ")
     for pd in incomplete_dates:
         print(pd)
 
-    incomplete_dates = sorted(incomplete_dates, key=lambda date_tuple: date_tuple[0])
 
     while len(incomplete_dates) > 1:
         first = incomplete_dates[0]
         last = incomplete_dates[-1]
 
-        print("First ", first)
-        print ("Last ", last)
+        # print("First ", first)
+        # print ("Last ", last)
 
         Prof_add = Professors[first[1]]
         Prof_red = Professors[last[1]]
@@ -190,9 +205,7 @@ if OPTIMISE_DATES:
         if Prof_add.full(prints=False):
             del incomplete_dates[0]
 
-        print(incomplete_dates)
-
-
+        # print(incomplete_dates)
 
 
 #### READ OUT DATES FROM PROF CLASSES
@@ -236,6 +249,8 @@ with open('data/result.json', 'w') as file:
     cnt_stud_w_no_full_dates = 0
 
     studs_with_no_date = []
+    studs_with_one_date = []
+    studs_with_two_date = []
 
     for stud_idx in range(len(membership)):
         studdates = np.nonzero(membership[stud_idx])[0]
@@ -257,8 +272,10 @@ with open('data/result.json', 'w') as file:
             studs_with_no_date.append(stud_idx)
         elif full_date == 1:
             cnt_stud_w_one_full_dates += 1
+            studs_with_one_date.append(stud_idx)
         else:
             cnt_stud_w_two_full_dates += 1
+            studs_with_two_date.append(stud_idx)
 
 
     for prof_idx in range(len(membership[0])):
@@ -283,6 +300,8 @@ with open('data/result.json', 'w') as file:
     print("one full date students: ", cnt_stud_w_one_full_dates)
     print("no full date students: ", cnt_stud_w_no_full_dates)
     print("studs with no full date:", studs_with_no_date)
+    print("studs with one full date:", studs_with_one_date)
+    print("studs with two full date:", studs_with_two_date)
 
     print("\n---Only valid for first week mode---")
     print("full dates: ", cnt_full_dates)
