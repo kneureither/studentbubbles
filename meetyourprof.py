@@ -23,6 +23,7 @@ with open(inputdata) as input:
 prefs = []
 studids = []
 fachsems = []
+orig_prefs = []
 
 # get data
 for key in exportdata:
@@ -32,6 +33,8 @@ for key in exportdata:
     id = stud['id']
     fachsem = stud['fachsem']
 
+    orig_prefs.append(pref)
+
     # modify weights for 1st and 3rd semester
     if fachsem == "1":
         for i in range(len(pref)):
@@ -40,6 +43,8 @@ for key in exportdata:
     prefs.append(pref)
     fachsems.append(fachsem)
     studids.append(id)
+
+print("(STATUS) : Student count", len(exportdata))
 
 
 #### PROF DATA
@@ -67,14 +72,16 @@ for key in profdata:
         isodate = date.fromisoformat(datestring.split(' ')[0])
         weeks.append(isodate.isocalendar()[1] - 47)
 
+    print(weeks)
+
     # check if weeks are excluded and refine data
-    for week in weeks:
-        if week in EXCLUDE_WEEKS:
-            i = weeks.index(week)
+    for exclweek in EXCLUDE_WEEKS:
+        if exclweek in weeks:
+            i = weeks.index(exclweek)
             del profdate[i]
             datecnt -= 1
             del weeks[i]
-            print("(STATUS) : Prepare data ", prof['name'], "deleted date in week", i+1)
+            # print("(STATUS) : Prepare data ", prof['name'], "deleted date in week", exclweek)
 
     # check format
     assert datecnt == len(profdate) == len(weeks)
@@ -182,6 +189,7 @@ if OPTIMISE_DATES:
 
     incomplete_dates = sorted(incomplete_dates, key=lambda date_tuple: date_tuple[0])
 
+    print("\n\n************************ OPTIM ***************************")
     print("(STATUS) : These dates must be optimised: ")
     for pd in incomplete_dates:
         print(pd)
@@ -221,6 +229,7 @@ for Prof in Professors:
         date_idx += 1
     prof_idx += 1
 
+##### STORE RESULT AS JSON FILE
 
 result = dict()
 
@@ -232,7 +241,6 @@ for i in range(len(membership)):
 with open('data/result.json', 'w') as file:
     json.dump(result, file)
     file.close()
-
 
 #### SOME STATS:
 
@@ -251,6 +259,8 @@ with open('data/result.json', 'w') as file:
     studs_with_no_date = []
     studs_with_one_date = []
     studs_with_two_date = []
+
+    date_fill_count = [0 for i in range(7)]
 
     for stud_idx in range(len(membership)):
         studdates = np.nonzero(membership[stud_idx])[0]
@@ -279,17 +289,36 @@ with open('data/result.json', 'w') as file:
 
 
     for prof_idx in range(len(membership[0])):
+        print("\n")
         Professors[prof_idx].printMyDates()
         profdates = np.nonzero(membership[:, prof_idx])[0]
-        if len(profdates) is 6:
-            cnt_full_dates += 1
-        elif len(profdates) is 0:
+        print(profdates, len(profdates))
+
+        # basic check how many dates are full / empty / incomplete
+        if len(profdates) is 0:
             cnt_empty_dates += 1
-        elif len(profdates) < 6:
+        elif len(profdates) % 6 is 0:
+            cnt_full_dates += len(profdates) // 6
+        elif not len(profdates) % 6 is 0:
             cnt_nfull_dates += 1
-            cnt_overflow_studs += len(profdates)
+            cnt_overflow_studs += len(profdates) % 6
         else:
             pass
+
+        # detailed check
+        cnt_week_stud = [0 for i in range(4)]
+
+        for stud in profdates:
+            print(stud, prof_idx)
+            print(membership[stud][prof_idx])
+            cnt_week_stud[membership[stud][prof_idx]-1] += 1
+
+        for datefill in cnt_week_stud:
+            if datefill is not 0:
+                date_fill_count[datefill] += 1
+
+
+
 
 
     print("two date students: ", cnt_stud_w_two_dates)
@@ -309,10 +338,38 @@ with open('data/result.json', 'w') as file:
     print("empty dates: ", cnt_empty_dates)
     print("overflow studs: ", cnt_overflow_studs)
 
+    print("date fill states:", date_fill_count)
 
 
+    cnt_stud_got_their_prefs = [0 for i in range(3)]
 
+    for i in range(len(preferences)):
+        prefs = preferences[i]
+        print(prefs)
+        membs = membership[i]
+        print(membs)
 
+        match = 0
+        no_match = 0
+
+        for p, m in zip(prefs, membs):
+            if (p == 1 or p==3 )and m > 0:
+                match += 1
+            elif m > 0:
+                no_match += 1
+            else:
+                pass
+
+        if match == 2 and no_match == 0:
+            cnt_stud_got_their_prefs[2] += 1
+        elif match == 1 and no_match == 1:
+            cnt_stud_got_their_prefs[1] += 1
+        elif match == 0 and no_match == 2:
+            cnt_stud_got_their_prefs[0] += 1
+        else:
+            print("Something went wrong!")
+
+    print("Student got so many of their preferences", cnt_stud_got_their_prefs)
 
 
 
