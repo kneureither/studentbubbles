@@ -194,6 +194,9 @@ if OPTIMISE_DATES:
     for pd in incomplete_dates:
         print(pd)
 
+    # this list contains students in wait list, in case they already are associated to the current Prof_add
+    temporary_studs_on_hold = []
+    fresh_prof = True
 
     while len(incomplete_dates) > 1:
         first = incomplete_dates[0]
@@ -205,13 +208,33 @@ if OPTIMISE_DATES:
         Prof_add = Professors[first[1]]
         Prof_red = Professors[last[1]]
 
-        Prof_add.getDateForStudent(Prof_red.popStudent())
+        if temporary_studs_on_hold and fresh_prof:
+            stud_candidate = temporary_studs_on_hold.pop(0)
+
+            if not Prof_add.studAlreadyMember(stud_candidate):
+                Prof_add.getDateForStudent(stud_candidate)
+            else:
+                temporary_studs_on_hold.append(stud_candidate)
+        else:
+            stud_candidate = Prof_red.popStudent()
+
+            if not Prof_add.studAlreadyMember(stud_candidate):
+                Prof_add.getDateForStudent(stud_candidate)
+            else:
+                temporary_studs_on_hold.append(stud_candidate)
+
+        fresh_prof = False
+
+        # handle case of last prof -> its possible to get stuck here if temporary_studs_on_hold it not empty,
+        # but the students are already added to the last prof of list.
 
         if Prof_red.full(prints=False):
             del incomplete_dates[-1]
 
         if Prof_add.full(prints=False):
             del incomplete_dates[0]
+            # fresh prof -> studs on hold are handled first.
+            fresh_prof = True
 
         # print(incomplete_dates)
 
@@ -289,10 +312,10 @@ with open('data/result.json', 'w') as file:
 
 
     for prof_idx in range(len(membership[0])):
-        print("\n")
+        print()
         Professors[prof_idx].printMyDates()
         profdates = np.nonzero(membership[:, prof_idx])[0]
-        print(profdates, len(profdates))
+        # print(profdates, len(profdates))
 
         # basic check how many dates are full / empty / incomplete
         if len(profdates) is 0:
@@ -309,15 +332,13 @@ with open('data/result.json', 'w') as file:
         cnt_week_stud = [0 for i in range(4)]
 
         for stud in profdates:
-            print(stud, prof_idx)
-            print(membership[stud][prof_idx])
+            # print(stud, prof_idx)
+            # print(membership[stud][prof_idx])
             cnt_week_stud[membership[stud][prof_idx]-1] += 1
 
         for datefill in cnt_week_stud:
             if datefill is not 0:
                 date_fill_count[datefill] += 1
-
-
 
 
 
@@ -332,12 +353,14 @@ with open('data/result.json', 'w') as file:
     print("studs with one full date:", studs_with_one_date)
     print("studs with two full date:", studs_with_two_date)
 
-    print("\n---Only valid for first week mode---")
+    print("\n---date stud stats---")
     print("full dates: ", cnt_full_dates)
     print("not full dates: ", cnt_nfull_dates)
     print("empty dates: ", cnt_empty_dates)
-    print("overflow studs: ", cnt_overflow_studs)
+    print("overflow stud places: ", cnt_overflow_studs)
 
+
+    print("\n--- valid ---")
     print("date fill states:", date_fill_count)
 
 
@@ -345,15 +368,15 @@ with open('data/result.json', 'w') as file:
 
     for i in range(len(preferences)):
         prefs = preferences[i]
-        print(prefs)
+        # print(prefs)
         membs = membership[i]
-        print(membs)
+        # print(membs)
 
         match = 0
         no_match = 0
 
         for p, m in zip(prefs, membs):
-            if (p == 1 or p==3 )and m > 0:
+            if (p == 1 or p==3) and m > 0:
                 match += 1
             elif m > 0:
                 no_match += 1
@@ -367,7 +390,12 @@ with open('data/result.json', 'w') as file:
         elif match == 0 and no_match == 2:
             cnt_stud_got_their_prefs[0] += 1
         else:
-            print("Something went wrong!")
+            print("Something went wrong! Student ", i)
+            print(match, no_match)
+            print(membs)
+            print(prefs)
+            print("ID:", studids[i])
+            print()
 
     print("Student got so many of their preferences", cnt_stud_got_their_prefs)
 

@@ -10,7 +10,7 @@ class Professor:
         if student_lst is not None:
             assert stud_cnt == len(student_lst)
 
-        self.students = student_lst
+        self.students = student_lst.tolist()
         self.student_cnt = stud_cnt
 
         self.max_date_members = 6
@@ -75,10 +75,14 @@ class Professor:
 
         return self.dates
 
+    def studAlreadyMember(self, stud):
+        return stud in self.students
+
     def getDateForStudent(self, stud):
         group = self.testDateForStudent(stud)
         self.added_students += 1
         self.dates[group].append(stud) # add to group
+        self.students.append(stud)
         return group
 
     def testDateForStudent(self, stud):
