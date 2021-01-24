@@ -36,9 +36,7 @@ In a second step, the memeber count of the dates is optimised, as we only want t
 Therefore, the ```Professor``` class is needed. It handles the students that were assigned to one professor and can be used
 to swap students aroudn between different professors. The algorithm tries to fill up as many dates as possible, by putting
 the dates that are not full into a queue (sorted by number of students). From that, always the first and last are extracted and the students from the last 
-added to the students to the first. 
-
-This is continued until the queue is only contains one or no item. 
+added to the students to the first. This is continued until the queue is only contains one or no item. 
 
 The algorithm has one problem, namely that it is by chance possible, that a student is added twice to the same prof, which
 leads to one student having one date less or two dates with the same prof. At this is an edge case (having in mind, that
