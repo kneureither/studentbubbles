@@ -44,10 +44,3 @@ The algorithm has one problem, namely that it is by chance possible, that a stud
 leads to one student having one date less or two dates with the same prof. At this is an edge case (having in mind, that
 there are 40 profs and more than 100 students) this behaviour is accepted.
 
-
-### Who can I talk to
-
-This code was developed by Konstantin Neureither. 
-In case you need to use the code and encounter problems, feel free to drop me a message at stud@kneureither.de.
-
-
