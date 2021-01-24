@@ -32,8 +32,8 @@ The Meet-Your Prof optimization code can be found in *meetyourprof.py* as well a
 implements the json data read of professors and the preferences and uses the function of the student bubble optimisation 
 to solve a graph problem that looks similar as the former one. 
 
-In a second step, the memeber count of the dates is optimised, as we only want to allow dates that contain six students. 
-Therefore, the ```Professor``` class is needed. It handles the students that were assigned to one professor and can be used
+In a second step, the memeber count of the dates is optimized, as we only want to allow dates that contain six students. 
+Therefore, the ```Professor``` class from *classes/professordate.py* is needed. It handles the students that were assigned to one professor and can be used
 to swap students aroudn between different professors. The algorithm tries to fill up as many dates as possible, by putting
 the dates that are not full into a queue (sorted by number of students). From that, always the first and last are extracted and the students from the last 
 added to the students to the first. This is continued until the queue is only contains one or no item. 
