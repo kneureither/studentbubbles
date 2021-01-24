@@ -1,5 +1,5 @@
-from studentbubbles import solve_bubble_optimization
-from studentbubbles import calculate_result_quality
+from bubble_optimization import solve_bubble_optimization
+from bubble_optimization import calculate_result_quality
 import numpy as np
 import matplotlib.pyplot as plt
 import time

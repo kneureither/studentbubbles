@@ -6,12 +6,16 @@ import heapq
 from classes.professordate import Professor
 from datetime import date
 
-inputdata = "data/studenten5.json"
+inputdata = "data/studenten6.json"
 inputprofs = "data/professoren.json"
+
+# If False, students in dates with less than 6 participants are systematically shifted from dates with less students to dates with more students.
+# If True, students in dates with less than 6 participants are randomly distributed
 RAND_SORT = False
+
 ONLY_FIRST_WEEK = False
 OPTIMISE_DATES = True
-EXCLUDE_WEEKS = [1]
+EXCLUDE_WEEKS = [1, 4]
 
 
 #### DATE DATA
@@ -25,7 +29,7 @@ studids = []
 fachsems = []
 orig_prefs = []
 
-# get data
+# get data from json file
 for key in exportdata:
     stud = exportdata[key]
 
@@ -58,7 +62,7 @@ profdatecnts = []
 profdates = []
 profweeks = []
 
-# get data
+# get data from json
 idx=1
 for key in profdata:
     prof = profdata[key]
@@ -252,6 +256,14 @@ for Prof in Professors:
         date_idx += 1
     prof_idx += 1
 
+#### SOME TESTS
+
+for stud in membership:
+    assert len(np.nonzero(stud)[0]) <= 2
+
+    for pref in np.nonzero(stud)[0]:
+        date = stud[pref]
+        assert 4 >= date > 0
 
 #### SOME STATS:
 
@@ -299,6 +311,8 @@ for stud_idx in range(len(membership)):
         studs_with_two_date.append(stud_idx)
 
 
+empty_profs = []
+
 for prof_idx in range(len(membership[0])):
     print()
     Professors[prof_idx].printMyDates()
@@ -308,6 +322,7 @@ for prof_idx in range(len(membership[0])):
     # basic check how many dates are full / empty / incomplete
     if len(profdates) is 0:
         cnt_empty_dates += 1
+        empty_profs.append(Professors[prof_idx].name)
     elif len(profdates) % 6 is 0:
         cnt_full_dates += len(profdates) // 6
     elif not len(profdates) % 6 is 0:
@@ -332,7 +347,6 @@ for prof_idx in range(len(membership[0])):
 
 datecount = 0
 for d in date_fill_count:
-    print(d)
     datecount += d
 
 print("two date students: ", cnt_stud_w_two_dates)
@@ -401,6 +415,10 @@ stud_sem_one_full_date = [fachsems[i] for i in studs_with_one_date]
 stud_sem_two_full_dates = [fachsems[i] for i in studs_with_two_date]
 
 
+print("Profs, that didnt get a date:")
+print(empty_profs)
+
+
 #### write stats to result
 
 stats = dict(date_cnt=datecount,
@@ -426,7 +444,7 @@ for i in range(len(membership)):
     studdict = dict(id=studids[i], fachsem=fachsems[i], prefs=preferences[i].tolist(), dates=membership[i].tolist())
     result[str(i)] = studdict
 
-with open('data/result.json', 'w') as file:
+with open('data/result6.json', 'w') as file:
     json.dump(result, file)
     file.close()
 

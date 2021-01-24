@@ -15,10 +15,12 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None, preferen
     num_students = len(preferences)
     num_bubbles = len(preferences[0])
 
+    # console output
     PRINT_COMPLETE_GRAPH = False
     PRINT_MEMBERSHIP_EDGES = False
     PRINT_GRAPH = False
 
+    # auto definition of bubble_capacities, if nothing was provided.
     if bubble_capacities is None:
         max_bubble_size = np.ceil(num_students / num_bubbles)
         print("INFO  : Set bubble size to working minimum, which is: %d, number of bubbles: %d\n" % (max_bubble_size, num_bubbles))
@@ -46,8 +48,11 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None, preferen
 
     # for evaluation of ordering success
     student_got_priority = [0,0,0,0,0]
+
     # create the membership matrix for result
     membership = [[0 for i in range(num_bubbles)] for j in range(num_students)]
+
+    ### DEFINE THE GRAPH STRUCTURE
 
     # store graph
     start_nodes = []
@@ -103,7 +108,10 @@ def solve_bubble_optimization(preferences=None, bubble_capacities=None, preferen
     for i in range(0, len(supplies)):
         min_cost_flow.SetNodeSupply(i, supplies[i])
 
+
+
     # Find the minimum cost flow between node 0 and node 4.
+    ### THIS SOLVES THE PROBLEM
     if min_cost_flow.Solve() == min_cost_flow.OPTIMAL:
 
         if PRINT_COMPLETE_GRAPH:
@@ -179,6 +187,10 @@ def calculate_result_quality(preferences, membership):
 
 
 if __name__ == "__main__":
+    """
+    Perform a simple test
+    """
+
     # define the data
     preferences = np.array([[4,5], [1,5], [3,4], [1,1], [2,4]])
     bubble_capacities = [3, 3]

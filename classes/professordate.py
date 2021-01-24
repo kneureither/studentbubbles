@@ -1,5 +1,6 @@
 from random import randint, shuffle
 import queue
+import numpy as np
 
 class Professor:
 
@@ -10,7 +11,11 @@ class Professor:
         if student_lst is not None:
             assert stud_cnt == len(student_lst)
 
-        self.students = student_lst.tolist()
+
+        if isinstance(student_lst, np.ndarray):
+            self.students = student_lst.tolist()
+        else:
+            self.students = student_lst
         self.student_cnt = stud_cnt
 
         self.max_date_members = 6
@@ -121,14 +126,11 @@ class Student:
 
 
 
-
-
-
 if __name__ == "__main__":
     student_list = [1,2,3,4,5,6,7,8,9,10,11]
 
     print("len ", len(student_list))
-    Prof = Professor(student_list)
+    Prof = Professor(len(student_list), student_list)
     dates = Prof.distributeRandom()
 
     print(dates)
